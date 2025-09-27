@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useGetGeminiResumeQuery } from '../hooks/useGetGeminiResumeQuery';
+import { TextSummarizerView } from './TextSummarizerView';
 
 type Props = {};
 
@@ -63,6 +64,7 @@ export const GeminiResumer = (props: Props) => {
           {summary}
         </pre>
       )}
+      <TextSummarizerView />
     </div>
   );
 };
