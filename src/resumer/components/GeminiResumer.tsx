@@ -8,38 +8,25 @@ export const GeminiResumer = (props: Props) => {
   const [input, setInput] = useState('');
   const [summary, setSummary] = useState('');
 
+  const [shortSummary, setShortSummary] = useState<string>('');
+  const [mediumSummary, setMediumSummary] = useState<string>('');
+  const [longSummary, setLongSummary] = useState<string>('');
+
   const geminiResumeGetter = useGetGeminiResumeQuery(input);
-  console.log('Resumen: ', geminiResumeGetter.data);
-
-  useEffect(() => {
-    if (geminiResumeGetter.data)
-      setSummary(JSON.stringify(geminiResumeGetter.data));
-  }, [geminiResumeGetter]);
-
-  // const GEMINI_API =
-  //   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-  // const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
   const handleSummarize = async () => {
-    // try {
-    //   const res = await axios.post(`${GEMINI_API}?key=${API_KEY}`, {
-    //     contents: [
-    //       {
-    //         parts: [
-    //           {
-    //             text: `Resume este texto en 3 versiones (corto, medio, largo):\n\n${input}`,
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //   });
-    //   // console.log('Respuesta', res.data.candidates);
-    //   console.log('Respuesta', res);
-    //   setSummary(JSON.stringify(res.data, null, 2));
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    if (geminiResumeGetter.data) {
+      const obj = geminiResumeGetter.data;
+      const str = JSON.stringify(geminiResumeGetter.data);
+
+      console.log('Resumen: ', obj.candidates);
+      setSummary(str);
+    }
   };
+
+  useEffect(() => {
+    handleSummarize();
+  }, [geminiResumeGetter]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-100">

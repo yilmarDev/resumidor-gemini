@@ -16,16 +16,16 @@ interface TextSummarizerViewProps {
   short?: string;
   medium?: string;
   long?: string;
+  isLoading?: boolean;
 }
 
-export const TextSummarizerView = () => {
+export const TextSummarizerView = ({
+  short = 'Aquí aparecerá el resumen corto...',
+  medium = 'Aquí aparecerá el resumen medio...',
+  long = 'Aquí aparecerá el resumen largo...',
+  isLoading,
+}: TextSummarizerViewProps) => {
   const [inputText, setInputText] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [summaries, setSummaries] = useState<{
-    short?: string;
-    medium?: string;
-    long?: string;
-  }>({});
 
   return (
     <Box sx={{ flexGrow: 1, p: 2 }}>
@@ -44,35 +44,48 @@ export const TextSummarizerView = () => {
             <Button
               variant="contained"
               color="primary"
-              disabled={!inputText || loading}
+              disabled={!inputText || isLoading}
               onClick={() => console.log('object')}
             >
-              {loading ? <CircularProgress size={24} /> : 'Resumir'}
+              {isLoading ? <CircularProgress size={24} /> : 'Resumir'}
             </Button>
           </Box>
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
           <Grid container spacing={2}>
-            {['short', 'medium', 'long'].map((type) => (
-              <Grid size={{ xs: 12 }} key={type}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      {type === 'short'
-                        ? 'Resumen Corto'
-                        : type === 'medium'
-                        ? 'Resumen Medio'
-                        : 'Resumen Largo'}
-                    </Typography>
-                    <Typography variant="body2">
-                      {summaries[type as keyof typeof summaries] ||
-                        'Aquí aparecerá el resumen...'}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
+            <Grid size={{ xs: 12 }}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Resumen corto
+                  </Typography>
+                  <Typography variant="body2">{short}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Resumen medio
+                  </Typography>
+                  <Typography variant="body2">{medium}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Resumen Largo
+                  </Typography>
+                  <Typography variant="body2">{long}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
