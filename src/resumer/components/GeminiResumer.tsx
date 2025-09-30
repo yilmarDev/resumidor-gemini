@@ -16,11 +16,23 @@ export const GeminiResumer = (props: Props) => {
 
   const handleSummarize = async () => {
     if (geminiResumeGetter.data) {
-      const obj = geminiResumeGetter.data;
       const str = JSON.stringify(geminiResumeGetter.data);
-
-      console.log('Resumen: ', obj.candidates);
       setSummary(str);
+
+      const obj =
+        geminiResumeGetter.data.candidates?.[0].content?.parts?.[0].text;
+      if (obj) {
+        // console.log(
+        //   'Resumen FP: ',
+        //   obj.candidates?.[0].content?.parts?.[0].text
+        // );
+
+        const parts = obj.split(/\*\*.*?\*\*/g);
+        setShortSummary(parts[1] || '');
+        setMediumSummary(parts[2] || '');
+        setLongSummary(parts[3] || '');
+        console.log('Parts: ', parts);
+      }
     }
   };
 
@@ -51,7 +63,12 @@ export const GeminiResumer = (props: Props) => {
           {summary}
         </pre>
       )}
-      <TextSummarizerView />
+      <TextSummarizerView
+        short={shortSummary}
+        medium={mediumSummary}
+        long={mediumSummary}
+        isLoading={geminiResumeGetter.isLoading}
+      />
     </div>
   );
 };

@@ -1,12 +1,13 @@
 import { geminiApi } from '../../shared/api/geminiApi';
-import { GeminiResponseAPIv2 } from '../interfaces/gemini';
+
+import type { GenerateContentResponse } from '@google/genai';
 
 const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
 export const getGeminiResume = async (
   input: string
-): Promise<GeminiResponseAPIv2> => {
-  const { data } = await geminiApi.post<GeminiResponseAPIv2>(
+): Promise<GenerateContentResponse> => {
+  const { data } = await geminiApi.post<GenerateContentResponse>(
     `gemini-2.0-flash:generateContent?key=${API_KEY}`,
     {
       contents: [
