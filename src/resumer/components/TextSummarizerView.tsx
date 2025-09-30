@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch } from 'react';
 import {
   Box,
   Button,
@@ -17,6 +17,8 @@ interface TextSummarizerViewProps {
   medium?: string;
   long?: string;
   isLoading?: boolean;
+  inputValue: string;
+  onInputChange: Dispatch<React.SetStateAction<string>>;
 }
 
 export const TextSummarizerView = ({
@@ -24,9 +26,9 @@ export const TextSummarizerView = ({
   medium = 'Aquí aparecerá el resumen medio...',
   long = 'Aquí aparecerá el resumen largo...',
   isLoading,
+  inputValue,
+  onInputChange,
 }: TextSummarizerViewProps) => {
-  const [inputText, setInputText] = useState('');
-
   return (
     <Box sx={{ flexGrow: 1, p: 2 }}>
       <Grid container spacing={2}>
@@ -35,8 +37,8 @@ export const TextSummarizerView = ({
             label="Pega tu texto aquí"
             multiline
             rows={10}
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            value={inputValue}
+            onChange={(e) => onInputChange(e.target.value)}
             variant="outlined"
             fullWidth
           />
@@ -44,7 +46,7 @@ export const TextSummarizerView = ({
             <Button
               variant="contained"
               color="primary"
-              disabled={!inputText || isLoading}
+              disabled={!inputValue || isLoading}
               onClick={() => console.log('object')}
             >
               {isLoading ? <CircularProgress size={24} /> : 'Resumir'}
