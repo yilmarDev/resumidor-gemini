@@ -4,7 +4,7 @@ import type { GenerateContentResponse } from '@google/genai';
 
 const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
-export const getGeminiResume = async (
+export const getGeminiSummary = async (
   input: string
 ): Promise<GenerateContentResponse> => {
   const { data } = await geminiApi.post<GenerateContentResponse>(

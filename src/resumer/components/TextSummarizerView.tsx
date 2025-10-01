@@ -17,9 +17,9 @@ interface TextSummarizerViewProps {
   medium?: string;
   long?: string;
   isLoading?: boolean;
-  inputValue: string;
-  onInputChange: Dispatch<React.SetStateAction<string>>;
-  setIsResumerActive: Dispatch<React.SetStateAction<boolean>>;
+  originalTextInput: string;
+  setOriginalTextInput: Dispatch<React.SetStateAction<string>>;
+  setIsSummarizerActive: Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const TextSummarizerView = ({
@@ -27,9 +27,9 @@ export const TextSummarizerView = ({
   medium = 'Aquí aparecerá el resumen medio...',
   long = 'Aquí aparecerá el resumen largo...',
   isLoading,
-  inputValue,
-  onInputChange,
-  setIsResumerActive,
+  originalTextInput: inputValue,
+  setOriginalTextInput: onInputChange,
+  setIsSummarizerActive,
 }: TextSummarizerViewProps) => {
   return (
     <Box sx={{ flexGrow: 1, p: 2 }}>
@@ -49,7 +49,7 @@ export const TextSummarizerView = ({
               variant="contained"
               color="primary"
               disabled={!inputValue || isLoading}
-              onClick={() => setIsResumerActive(true)}
+              onClick={() => setIsSummarizerActive(true)}
             >
               {isLoading ? <CircularProgress size={24} /> : 'Resumir'}
             </Button>

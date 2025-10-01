@@ -1,20 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useGetGeminiResumeQuery } from '../hooks/useGetGeminiResumeQuery';
+import { useGetGeminiSummarizerQuery } from '../hooks/useGetGeminiSummarizerQuery';
 import { TextSummarizerView } from './TextSummarizerView';
 import { Typography } from '@mui/material';
 
-export const GeminiResumer = () => {
+export const GeminiSummarizer = () => {
   const [originalTextInput, setOriginalTextInput] = useState<string>('');
-  const [isResumerActive, setIsResumerActive] = useState<boolean>(false);
+  const [isSummarizerActive, setIsSummarizerActive] = useState<boolean>(false);
 
   const [allSummaries, setAllSummaries] = useState<string>('');
   const [shortSummary, setShortSummary] = useState<string>('');
   const [mediumSummary, setMediumSummary] = useState<string>('');
   const [longSummary, setLongSummary] = useState<string>('');
 
-  const geminiResumeGetter = useGetGeminiResumeQuery(
+  const geminiResumeGetter = useGetGeminiSummarizerQuery(
     originalTextInput,
-    isResumerActive
+    isSummarizerActive
   );
 
   const handleSummarize = useCallback(async () => {
@@ -39,8 +39,8 @@ export const GeminiResumer = () => {
   }, [geminiResumeGetter, handleSummarize]);
 
   useEffect(() => {
-    if (isResumerActive) setIsResumerActive(false);
-  }, [isResumerActive]);
+    if (isSummarizerActive) setIsSummarizerActive(false);
+  }, [isSummarizerActive]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-100">
@@ -53,9 +53,9 @@ export const GeminiResumer = () => {
         medium={mediumSummary}
         long={longSummary}
         isLoading={geminiResumeGetter.isLoading}
-        inputValue={originalTextInput}
-        onInputChange={setOriginalTextInput}
-        setIsResumerActive={setIsResumerActive}
+        originalTextInput={originalTextInput}
+        setOriginalTextInput={setOriginalTextInput}
+        setIsSummarizerActive={setIsSummarizerActive}
       />
 
       {allSummaries && (
