@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch } from 'react';
+import { Dispatch, useState } from 'react';
 import {
   Box,
   Button,
@@ -10,7 +10,15 @@ import {
   Typography,
   TextField,
   CircularProgress,
+  Tab,
+  Tabs,
 } from '@mui/material';
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
 interface TextSummarizerViewProps {
   short?: string;
@@ -31,6 +39,35 @@ export const TextSummarizerView = ({
   setOriginalTextInput: onInputChange,
   setIsSummarizerActive,
 }: TextSummarizerViewProps) => {
+  const [currentTab, setCurrentTab] = useState(0);
+
+  function CustomTabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      </div>
+    );
+  }
+
+  function a11yProps(index: number) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setCurrentTab(newValue);
+  };
+
   return (
     <Box sx={{ flexGrow: 1, p: 2 }}>
       <Grid container spacing={2}>
@@ -57,40 +94,55 @@ export const TextSummarizerView = ({
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12 }}>
-              <Card variant="outlined">
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Resumen corto
-                  </Typography>
-                  <Typography variant="body2">{short}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs
+              value={currentTab}
+              onChange={handleChange}
+              aria-label="Visualizador de resumenes"
+            >
+              <Tab label="Normal view" {...a11yProps(0)} />
+              <Tab label="Markdown view" {...a11yProps(1)} />
+            </Tabs>
+          </Box>
+          <CustomTabPanel value={currentTab} index={0}>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12 }}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      Resumen corto
+                    </Typography>
+                    <Typography variant="body2">{short}</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
 
-            <Grid size={{ xs: 12 }}>
-              <Card variant="outlined">
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Resumen medio
-                  </Typography>
-                  <Typography variant="body2">{medium}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+              <Grid size={{ xs: 12 }}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      Resumen medio
+                    </Typography>
+                    <Typography variant="body2">{medium}</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
 
-            <Grid size={{ xs: 12 }}>
-              <Card variant="outlined">
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Resumen Largo
-                  </Typography>
-                  <Typography variant="body2">{long}</Typography>
-                </CardContent>
-              </Card>
+              <Grid size={{ xs: 12 }}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      Resumen Largo
+                    </Typography>
+                    <Typography variant="body2">{long}</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
-          </Grid>
+          </CustomTabPanel>
+          <CustomTabPanel value={currentTab} index={1}>
+            Item Two
+          </CustomTabPanel>
         </Grid>
       </Grid>
     </Box>
